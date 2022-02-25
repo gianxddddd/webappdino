@@ -1,6 +1,7 @@
 // Copyright (c) 2014 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
+
 (function () {
     'use strict';
     /**
@@ -2706,9 +2707,37 @@
     };
 })();
 
+let runner;
+let original_sfx_code;
+var sfxEnabled = true;
 
-function onDocumentLoad() {
-    new Runner('.interstitial-wrapper');
+function toggleSfx() {
+    if (!sfxEnabled) {
+        runner.playSound = original_sfx_code;
+        sfxEnabled = true;
+        return
+    }
+
+    runner.playSound = function () {};
+    sfxEnabled = false;
 }
 
-document.addEventListener('DOMContentLoaded', onDocumentLoad);
+document.addEventListener('DOMContentLoaded', () => {
+    runner = new Runner('.interstitial-wrapper');
+    original_sfx_code = runner.playSound;
+    document.body.addEventListener('click', () => {
+        var box = document.getElementById('messageBox');
+
+        if (!runner.activated) {
+            return
+        }
+        if (runner.paused) {
+            box.style.visibility = 'hidden';
+            runner.play();
+            return;
+        }
+    
+        runner.stop();
+        box.style.visibility = 'visible';
+    });
+});
