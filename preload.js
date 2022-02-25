@@ -10,10 +10,6 @@ currentWindow.webContents.once("dom-ready", () => {
     type: "normal",
     label: "Restart"
   });
-  const menuQuit = new MenuItem({
-    role: "quit",
-    type: "normal"
-  });
   const menuAbout = new MenuItem({
     type: "normal",
     label: "About",
@@ -27,11 +23,15 @@ currentWindow.webContents.once("dom-ready", () => {
       });
     }
   });
+  const menuQuit = new MenuItem({
+    role: "quit",
+    type: "normal"
+  });
 
   const menu = new Menu();
   menu.append(menuRestart);
-  menu.append(menuQuit);
   menu.append(menuAbout);
+  menu.append(menuQuit);
   Menu.setApplicationMenu(menu);
 
   titlebar = new Titlebar({
