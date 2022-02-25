@@ -1,0 +1,45 @@
+{
+  "name": "webappdino",
+  "version": "1.0.0",
+  "description": "A webapp with Chromium's dino game made using Electron",
+  "main": "index.js",
+  "author": "GianXD",
+  "license": "BSD-3-Clause",
+  "keywords": [
+    "chromium",
+    "dino",
+    "t-rex"
+  ],
+  "scripts": {
+    "start": "electron .",
+    "dist-win": "electron-builder --win",
+    "dist-linux": "electron-builder --linux",
+    "dist-mac": "electron-builder --mac"
+  },
+  "build": {
+    "appId": "com.gianxd.webappdino",
+    "asar": true,
+    
+    "win": {
+      "publisherName": "GianXD",
+      "target": "dir"
+    },
+    "linux": {
+      "category": "Game",
+      "target": "dir"
+    },
+    "mac": {
+      "category": "public.app-category.game",
+      "target": "dir"
+    }
+  },
+  "devDependencies": {
+    "electron": "^16.0.7",
+    "electron-builder": "^22.14.5",
+    "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "@6c65726f79/custom-titlebar": "^0.8.0",
+    "@electron/remote": "^2.0.1"
+  }
+}

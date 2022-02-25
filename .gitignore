@@ -1,0 +1,5 @@
+# Electron-builder distribution directory
+dist
+
+# Node.js modules
+node_modules
