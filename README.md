@@ -23,5 +23,7 @@ Finally, execute this single-line command to distribute webappdino:
 yarn run dist
 ```
 
+Note that application icon may be set to the default Electron icon, consider replacing `dist` with `dist-win`, `dist-linux`, or `dist-mac`
+
 ## End of README
 Thanks again for reading this crappy README file, hope you have a good day!
