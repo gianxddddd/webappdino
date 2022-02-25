@@ -23,14 +23,19 @@
     
     "win": {
       "publisherName": "GianXD",
+      "legalTrademarks": "(c) GianXD and The Chromium Authors, all rights reserved.",
+      "icon": "out/icon.ico",
       "target": "dir"
     },
     "linux": {
+      "synopsis": "Dino in a webapp",
       "category": "Game",
+      "icon": "out/icon.png",
       "target": "dir"
     },
     "mac": {
       "category": "public.app-category.game",
+      "icon": "out/icon.icns",
       "target": "dir"
     }
   },
