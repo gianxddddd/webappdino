@@ -25,5 +25,10 @@ yarn run dist
 
 Note that application icon may be set to the default Electron icon, consider replacing `dist` with `dist-win`, `dist-linux`, or `dist-mac`
 
+### Packaging [Optional]
+If you want to pack webappdino with an Inno Setup installer, you can do it by right-clicking "win-pack.iss" on the "out" directory then select "Compile" 
+
+This only works on Windows at the moment.
+
 ## End of README
 Thanks again for reading this crappy README file, hope you have a good day!
