@@ -1,12 +1,14 @@
 const { clipboard, dialog, getCurrentWindow, Menu, MenuItem } = require("@electron/remote");
 const { platform } = require("process");
 const Titlebar = require("@6c65726f79/custom-titlebar");
-const path = require("path");
-const currentWindow = getCurrentWindow();
+const webContents = getCurrentWindow().webContents;
 
 let titlebar;
 
-currentWindow.webContents.once("dom-ready", () => {
+webContents.once("dom-ready", () => {
+  var isSfxEnabled = true;
+  var isDevToolsShown = webContents.isDevToolsOpened();
+
   const submenuGame = new MenuItem({
     type: "submenu",
     label: "Game",
@@ -31,7 +33,7 @@ currentWindow.webContents.once("dom-ready", () => {
       label: "About",
       accelerator: "CmdOrCtrl+I",
       click: () => {
-        dialog.showMessageBoxSync(currentWindow, {
+        dialog.showMessageBoxSync(getCurrentWindow(), {
           type: "info",
           title: "About",
           detail: "(c) GianXD, 2022 all rights reserved."
@@ -45,7 +47,7 @@ currentWindow.webContents.once("dom-ready", () => {
       label: "Quit",
       accelerator: "CmdOrCtrl+W",
       click: () => {
-        const response = dialog.showMessageBoxSync(currentWindow, {
+        const response = dialog.showMessageBoxSync(getCurrentWindow(), {
           type: "question",
           title: "Exit",
           detail: "Your score will be lost!",
@@ -55,7 +57,7 @@ currentWindow.webContents.once("dom-ready", () => {
         });
 
         if (response == 0) {
-          currentWindow.close();
+          getCurrentWindow().close();
         }
       }
     }]
@@ -80,12 +82,16 @@ currentWindow.webContents.once("dom-ready", () => {
     }, {
       type: "separator"
     }, {
+      type: "checkbox",
+      role: "toggleFullscreen",
+      accelerator: "CmdOrCtrl+F11"
+    }, {
       type: "normal",
       label: "Take screenshot",
       accelerator: "CmdOrCtrl+PrintScreen",
       click: () => {
-        if (currentWindow.webContents.isBeingCaptured()) {
-          dialog.showMessageBoxSync(currentWindow, {
+        if (webContents.isBeingCaptured()) {
+          dialog.showMessageBoxSync(getCurrentWindow(), {
             type: "error",
             title: "Unable to take screenshot",
             message: "Game is still taking a screenshot!"
@@ -93,10 +99,10 @@ currentWindow.webContents.once("dom-ready", () => {
           return;
         }
 
-        currentWindow.webContents.capturePage().then((image) => {
+        webContents.capturePage().then((image) => {
           clipboard.writeImage(image);
         }).catch((error) => {
-          console.log("Failed to take a screenshot due to: %s", error);
+          alert(`Failed to take a screenshot due to: ${error}`);
         });
       }
     }]
@@ -106,16 +112,35 @@ currentWindow.webContents.once("dom-ready", () => {
     label: "Settings",
     sublabel: "Game setting options",
     submenu: [{
-      type: "normal",
-      label: "Show developer tools",
-      accelerator: "CmdOrCtrl+Shift+I",
+      type: "checkbox",
+      label: "Sound effects",
+      checked: isSfxEnabled,
       click: () => {
-        if (currentWindow.webContents.isDevToolsOpened()) {
-          currentWindow.webContents.closeDevTools();
+        if (isSfxEnabled) {
+          webContents.executeJavaScript("toggleSfx()");
+          isSfxEnabled = false;
           return;
         }
 
-        currentWindow.webContents.openDevTools();
+        webContents.executeJavaScript("toggleSfx(true)");
+        isSfxEnabled = true;
+      }
+    }, {
+      type: "separator"
+    }, {
+      type: "checkbox",
+      label: "Developer tools",
+      checked: isDevToolsShown,
+      accelerator: "CmdOrCtrl+Shift+I",
+      click: () => {
+        if (isDevToolsShown) {
+          webContents.closeDevTools();
+          isDevToolsShown = false;
+          return;
+        }
+
+        webContents.openDevTools();
+        isDevToolsShown = true;
       }
     }]
   });
@@ -129,13 +154,14 @@ currentWindow.webContents.once("dom-ready", () => {
   titlebar = new Titlebar({
     menu: Menu.getApplicationMenu(),
     platform: platform,
-    browserWindow: currentWindow,
+    browserWindow: getCurrentWindow(),
     backgroundColor: "#fff",
     icon: "https://cdn.discordapp.com/attachments/844193986254995456/946801623844405258/icon.png",
-    maximizable: false,
-    onMinimize: () => currentWindow.minimize(),
+    isMaximized: () => getCurrentWindow().isMaximized(),
+    onMinimize: () => getCurrentWindow().minimize(),
+    onMaximize: () => getCurrentWindow().isMaximized() ? getCurrentWindow().unmaximize() : getCurrentWindow().maximize(),
     onClose: () => {
-      const response = dialog.showMessageBoxSync(currentWindow, {
+      const response = dialog.showMessageBoxSync(getCurrentWindow(), {
         type: "question",
         title: "Exit",
         detail: "Your score will be lost!",
@@ -145,7 +171,7 @@ currentWindow.webContents.once("dom-ready", () => {
       });
 
       if (response == 0) {
-        currentWindow.close();
+        getCurrentWindow().close();
       }
     }
   });

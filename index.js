@@ -13,8 +13,7 @@ function createWindows() {
     height: 406,
     minWidth: 400,
     minHeight: 100,
-    maxWidth: 779,
-    maxHeight: 406,
+    titleBarStyle: "hidden",
     frame: false,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
@@ -51,10 +50,11 @@ function createWindows() {
     loadWindow.hide();
   });
 
+  window.maximize();
   loadWindow.hide();
   enable(window.webContents);
-  window.loadFile(path.join(__dirname, "dino", "dino.html"));
-  loadWindow.loadFile(path.join(__dirname, "app", "loading", "load.html"));
+  window.loadFile(path.join(__dirname, "dino", "index.html"));
+  loadWindow.loadFile(path.join(__dirname, "app", "loading", "index.html"));
 }
 
 app.whenReady().then(() => {
