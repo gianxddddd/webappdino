@@ -2708,23 +2708,20 @@
 })();
 
 let runner;
-let original_sfx_code;
-var sfxEnabled = true;
+let originSfxCode;
 
-function toggleSfx() {
-    if (!sfxEnabled) {
-        runner.playSound = original_sfx_code;
-        sfxEnabled = true;
-        return
+function toggleSfx(on) {
+    if (on !== undefined && on == true) {
+        runner.playSound = originSfxCode;
+        return;
     }
 
     runner.playSound = function () {};
-    sfxEnabled = false;
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     runner = new Runner('.interstitial-wrapper');
-    original_sfx_code = runner.playSound;
+    originSfxCode = runner.playSound;
     document.body.addEventListener('click', () => {
         var box = document.getElementById('messageBox');
 
