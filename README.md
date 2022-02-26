@@ -43,7 +43,8 @@ npm install # If you use npm
 ### The Last Step
 Finally, execute this single-line command to distribute webappdino:
 ```shell
-yarn run dist
+yarn run dist # If you use yarn
+npm run dist # If you use npm
 ```
 
 Note that application icon may be set to the default Electron icon, consider replacing `dist` with `dist-win`, `dist-linux`, or `dist-mac`
