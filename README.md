@@ -1,5 +1,28 @@
 ## Dino in a Webapp
-A webapp created using Electron containing the infamous Dino by The Chromium Authors.
+`chrome://dino` but in a webapp.
+
+## What does this do?
+It basically runs the Dinosaur game from Google Chrome (or Chromium) when it's offline in a webapp.
+
+
+*sort of..*
+
+## Notice to users
+The Dinosaur game is originally made by The Chromium Authors (or Google, perhaps) and I have nothing to do with it.
+
+The source code of the game is from [yell0wsuit](https://github.com/yell0wsuit)'s [chrome-dino-enhanced](https://github.com/yell0wsuit/chrome-dino-enhanced) which I cloned it and slam the code into this project.
+
+Big thanks to him though!
+
+## Testing
+To test webappdino in a temporary Electron application, you can simply execute this small line of code:
+```shell
+npm start
+```
+or if you use the `yarn` package manager:
+```shell
+yarn start
+```
 
 ## Distributing
 ### Needs
